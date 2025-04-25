@@ -1,4 +1,4 @@
-.profileContainer {
+/* .profileContainer {
     padding: 2rem;
     max-width: 800px;
     margin: 0 auto;
@@ -86,7 +86,7 @@
     font-weight: 500;
   }
   
-  /* Responsive */
+
   @media (min-width: 640px) {
     .userProfileCard {
       flex-direction: row;
@@ -98,4 +98,4 @@
       text-align: left;
     }
   }
-  
+   */

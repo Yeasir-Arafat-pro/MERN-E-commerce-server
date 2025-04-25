@@ -10,6 +10,16 @@ import Logout from './pages/auth/Logout';
 import UserProfile from './pages/users/UserProfile';
 import CreateUser from './pages/users/CreateUser';
 import UserRegisterVerify from './pages/users/UserRegisterVerify';
+import UpdateUser from './pages/users/UpdateUser';
+
+import './App.css';
+import AdminProtected from './routes/AdminProtected';
+import { AuthProvider } from './components/useContext/AuthContext';
+import LoginProtected from './routes/LoggedInProtected';
+import AllProducts from './pages/products/AllProducts';
+
+
+
 
 
 function App(){
@@ -25,20 +35,21 @@ function App(){
           element: <Home />,
         },
         {
-          path: "/users",
-          element: <User />,
-        },
-
-        {
           path: "/create-user",
           element: <CreateUser />,
         },
-
+        {
+          path: "/products",
+          element: <AllProducts />,
+        },
+        {
+          path: "/update-user",
+          element: <UpdateUser />,
+        },
         {
           path: "/register-verify/:token",
           element: <UserRegisterVerify />,
         },
-
         {
           path: "/users/:id",
           element: <UserProfile />,
@@ -48,19 +59,37 @@ function App(){
           element: <Register />,
         },
         {
-          path: "/auth/login",
-          element: <Login />,
-        },
-        {
           path: "/auth/logout",
           element: <Logout />,
         },
-      
+        // DashBoard/Admin Protected
+        {
+          path: "/dashboard/admin/",
+          element: <AdminProtected />,
+          children: [
+            {
+              path: "users",
+              element: <User />,
+            },
+          ],
+        },
+
+        {
+          path: "/auth/",
+          element: <LoginProtected />,
+          children: [
+            {
+              path: "login",
+              element: <Login />,
+            },
+          ],
+        },
+
         // {
         //   path: "dashboard/admin",
         //   element: <AdminProtected />,
         //   children: [
-            
+
         //     {
         //       path: "users",
         //       element: <User />,
@@ -68,40 +97,24 @@ function App(){
 
         //   ]
         // },
-
-
-
-      ]
-    }
-
-   
-      
-  ])
+      ],
+    },
+  ]);
 
   return (
-    <div className="dashboard">
+    <div>
+<AuthProvider>
+
 
       
 
+<RouterProvider router={router} />
+
+</AuthProvider>
 
 
-    <RouterProvider router={router} />
   
-    <footer>
-      <div className="form">
-        <form action="">
-          <label htmlFor="subscribe">Subscribe to newsletter:</label>
-          <input
-            type="email"
-            name="subscribe"
-            id="subscribe"
-            placeholder="Enter Your Email"
-          />
-          <button type="submit">Subscribe</button>
-        </form>
-      </div>
-      <div>&copy; Copyright 2025 Yeasir Express</div>
-    </footer>
+
   </div>
   
   )

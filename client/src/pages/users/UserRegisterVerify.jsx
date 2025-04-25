@@ -1,26 +1,41 @@
-import React, { useEffect } from 'react'
-import {  useDispatch } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom'
+import React, { useEffect } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
 import { verifyRegisterToken } from '../../features/users/userSlice';
 
 const UserRegisterVerify = () => {
-  const navigate = useNavigate()
-  const {token} = useParams()
-  const dispatch = useDispatch()
+  const { success, error } = useSelector((state) => state.userR); 
+  const navigate = useNavigate();
+  const { token } = useParams();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const verifyToken = async () => {
       try {
-        await dispatch(verifyRegisterToken({token}))
+         await dispatch(verifyRegisterToken({ token }));
+     
       } catch (error) {
-        console.log(error.message)
+        console.error(error.message);
+        toast.error("An error occurred during verification.");
       }
+    };
+    verifyToken();
+  }, [token, dispatch, navigate]);
+
+  useEffect(() => {
+    if (success) {
+      navigate("/auth/login", { replace: true }); // Navigate to login on success
+    } else if (error) {
+      toast.error(error.message || 'Verification failed!');
     }
-    verifyToken()
-    navigate('/auth/login', {replace: true})
-  }, [dispatch, token])
-  
+  }, [success, error, navigate]);
 
-}
+  return (
+    <div>
+      <ToastContainer />
+    </div>
+  );
+};
 
-export default UserRegisterVerify
+export default UserRegisterVerify;
